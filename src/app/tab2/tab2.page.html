@@ -1,0 +1,82 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Photo Gellery
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-searchbar id="search"></ion-searchbar>
+  <ion-card id="keyworkSearch">
+      <section>
+          <header><b>Keywork hot</b></header>
+          <ion-button size="small" id="dark" >Dark</ion-button>
+          <ion-button size="small" color="secondary">Sea</ion-button>
+          <ion-button size="small" color="tertiary">Space</ion-button>
+          <ion-button size="small" color="tertiary">City</ion-button>
+          <ion-button size="small" color="tertiary">Quote</ion-button>
+        </section>
+  </ion-card>  
+  <section class="goiy" >
+    
+      <ion-list *ngFor="let p of goiy" id="list_goiy">
+        <ion-item><ion-icon name="search" class="icon-search"></ion-icon> {{p}}</ion-item>       
+      </ion-list>
+       
+  </section>
+  <section class="result_search"> 
+  <ion-grid>
+    <ion-button class="close_btn" style="background-color: antiquewhite;"> <ion-icon name="close"></ion-icon></ion-button>
+    <ion-row>
+      <ion-col size="6">
+        <div>
+            <ion-img src="http://thuthuatphanmem.vn/uploads/2018/04/10/hinh-anh-dep-ve-tinh-yeu-54_052634251.jpg"></ion-img>
+        </div>
+      </ion-col >
+      <ion-col size="6">
+          <div>
+              <ion-img src="http://nhandaovadoisong.com.vn/wp-content/uploads/2019/05/hinh-nen-may-tinh-thien-nhien-3d-dep-kich-thuoc-lon-10.jpg"></ion-img>
+          </div>
+        </ion-col>
+        <ion-col size="6">
+            <div>
+                <ion-img src="https://thuthuatnhanh.com/wp-content/uploads/2019/11/hinh-nen-dien-thoai-dep-585x390.jpg"></ion-img>
+            </div>
+          </ion-col>
+          <ion-col size="6">
+              <div>
+                  <ion-img src="https://znews-photo.zadn.vn/w660/Uploaded/wyhktpu/2018_11_22/image003_4.jpg"></ion-img>
+              </div>
+            </ion-col>
+      <ion-col size="6">
+        <div>
+          <img src="http://thuthuatphanmem.vn/uploads/2018/04/10/hinh-anh-dep-ve-tinh-yeu-54_052634251.jpg">
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid> 
+  </section>
+  <section class="gallery">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6" *ngFor="let photo of photoService.photos">
+        <img  [src]="photo.data" (click)="imageModal(photo.data)" />
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-button (click)="imageModal()">open modal</ion-button>
+  <ion-fab class="delete_btn" vertical="bottom" horizontal="center" slot="fixed">
+    <ion-fab-button color="danger" (click)="deleteConfirm()">
+      <ion-icon name="trash"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  </section>
+
+  
+  <div>
+    <input type="file" (change)="uploadFile($event)" />
+    <div>{{ uploadPercent | async }}</div>
+    <a [href]="downloadURL | async">{{ downloadURL | async }}</a>
+  </div>
+</ion-content>

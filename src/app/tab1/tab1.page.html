@@ -1,0 +1,236 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Home
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-card class="welcome-card">
+      <img src="https://thuthuatnhanh.com/wp-content/uploads/2019/08/anh-dep-585x329.jpg" alt="" />
+      <ion-card-header>
+        <ion-card-subtitle>Get Started Photo Gellery</ion-card-subtitle>
+        <ion-card-title>Welcome to Jenick app</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>Now that your app has been created, you'll want to start building out features and components. Check out some of the resources below for next steps.</p>
+      </ion-card-content>
+    </ion-card>
+    <ion-list>
+      <ion-item-sliding *ngFor="let tech of techs; let i=index">
+        <ion-item button >
+          <ion-icon slot="start" name="logo-{{tech.icon}}" [style.color]="tech.color"></ion-icon>
+          <ion-label>
+            <h3>{{tech.title}}</h3>
+          </ion-label>
+        </ion-item>
+        <ion-item-options>
+          <ion-item-option color="primary" (click)="presentActionSheet(i)">
+            <ion-icon slot="end" name="more"></ion-icon>
+            More
+          </ion-item-option>
+          <ion-item-option color="secondary">
+            <ion-icon slot="end" name="archive"></ion-icon>
+            Archive
+          </ion-item-option>
+          <ion-item-option color="danger">
+            <ion-icon slot="end" name="chatboxes"></ion-icon>
+            chat
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+    <!--Listview-->
+    <h3>Base</h3>
+    <ion-list class="list-group">
+      <ion-item button *ngFor="let movie of moreMovies" [ngClass]="{selected: movie.selected==true}">
+        <ion-label >
+          <h3>{{movie.title}}</h3>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-label>MutilText</ion-label>
+    <ion-list>
+      <ion-item button *ngFor="let text of multilineList">
+        <ion-label>
+          <h4>{{text.title}}</h4>
+          <p>{{text.text}}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-list>
+      <ion-list-header>
+        Notes
+      </ion-list-header>
+      <ion-item *ngFor="let list of customList">
+        <ion-label>{{list.title}}</ion-label>
+        <ion-note slot="end" color="primary" class="star-icon"><ion-icon name="star"></ion-icon>{{list.rate}}</ion-note>
+      </ion-item>
+    </ion-list>
+    <ion-list>
+      <ion-list-header>Item thumbnails</ion-list-header>
+      <ion-card *ngFor="let list of cardList">
+      <ion-item >
+        <ion-thumbnail slot="start">
+          <img [src]="list.img">
+        </ion-thumbnail>
+        <ion-label>
+          <h2>{{list.title}}</h2>
+          <p>{{list.text}}</p>
+          </ion-label>
+      </ion-item>
+      </ion-card>
+      </ion-list>
+
+      <ion-list>
+        <ion-list-header>Image </ion-list-header>
+        <ion-item *ngFor="let item of movies">
+          <ion-thumbnail slot="start">
+            <ion-img [src]="item.imgsrc"></ion-img>
+          </ion-thumbnail>
+          <ion-label>
+            <h2>{{item.title}}</h2>
+            <p>{{item.director}}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list> 
+
+      <ion-list>
+        <ion-list-header>Icons</ion-list-header>
+        <ion-item button *ngFor="let icon of icons ">
+          <ion-icon slot="start" name="{{icon.icon}}" ></ion-icon>
+          <ion-label>
+            <h3>{{icon.name}}</h3>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-list-header>Item Avatars</ion-list-header>
+        <ion-item *ngFor="let item of users">
+          <ion-avatar slot="start">
+            <img [src]="item.imgsrc">
+          </ion-avatar>
+          <ion-label>
+            <h2>{{item.user}}</h2>
+            <p>{{item.phone}}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+      <ion-list>
+        <ion-list-header>
+          Group with Divider
+        </ion-list-header>
+
+        <ion-item-group *ngFor="let group of names">
+          <ion-item-divider>
+            <ion-label>{{group.header}}</ion-label>
+          </ion-item-divider>
+
+          <ion-item *ngFor="let item of group.items">
+            <ion-label>{{item.name}}</ion-label>
+          </ion-item>
+          </ion-item-group>
+      </ion-list>
+
+      <ion-list>
+        <ion-list-header> Todos</ion-list-header>
+        <ion-item-sliding *ngFor="let text of todo; let i=index">
+          <ion-item-options side="start">
+            <ion-item-option color="danger" expandable (click)="deleteTodos(i)">
+              Delete
+            </ion-item-option>
+          </ion-item-options>
+      
+          <ion-item>
+            <ion-label>
+              <h4>{{text.text}}</h4>
+            <p>{{text.time}}</p>
+            </ion-label>
+          </ion-item>
+      
+          <ion-item-options side="end">
+            <ion-item-option color="tertiary" expandable (click)="updateTodos(i)">
+              Update
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+        <ion-button (click)="presentAlertPrompt()">add new todo</ion-button>
+      </ion-list>
+      
+      <h4>Sortting and Ordering</h4>
+      <!-- The reorder gesture is disabled by default, enable it to drag and drop items -->
+      <ion-reorder-group (ionItemReorder)="doReorder($event)" disabled="false">
+        <!-- Default reorder icon, end aligned items -->
+        <ion-item>
+          <ion-label>
+            Item 1
+          </ion-label>
+          <ion-reorder slot="end"></ion-reorder>
+        </ion-item>
+      
+        <ion-item>
+          <ion-label>
+            Item 2
+          </ion-label>
+          <ion-reorder slot="end"></ion-reorder>
+        </ion-item>
+      
+        <!-- Default reorder icon, start aligned items -->
+        <ion-item>
+          <ion-reorder slot="start"></ion-reorder>
+          <ion-label>
+            Item 3
+          </ion-label>
+        </ion-item>
+      
+        <ion-item>
+          <ion-reorder slot="start"></ion-reorder>
+          <ion-label>
+            Item 4
+          </ion-label>
+        </ion-item>
+      
+        <!-- Custom reorder icon end items -->
+        <ion-item>
+          <ion-label>
+            Item 5
+          </ion-label>
+          <ion-reorder slot="end">
+            <ion-icon name="pizza"></ion-icon>
+          </ion-reorder>
+        </ion-item>
+      
+        <ion-item>
+          <ion-label>
+            Item 6
+          </ion-label>
+          <ion-reorder slot="end">
+            <ion-icon name="pizza"></ion-icon>
+          </ion-reorder>
+        </ion-item>
+      
+        <!-- Items wrapped in a reorder, entire item can be dragged -->
+        <ion-reorder>
+          <ion-item>
+            <ion-label>
+              Item 7
+            </ion-label>
+          </ion-item>
+        </ion-reorder>
+      
+        <ion-reorder>
+          <ion-item>
+            <ion-label>
+              Item 8
+            </ion-label>
+          </ion-item>
+        </ion-reorder>
+      </ion-reorder-group>
+    <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+      <ion-fab-button (click)="photoService.takePicture()">
+        <ion-icon name="camera"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+</ion-content>

@@ -1,0 +1,16 @@
+.welcome-card img {
+  max-height: 35vh;
+  overflow: hidden;
+}
+.star-icon {
+  float: right;
+  font-weight: bold;
+  color: #ff8400;
+}
+.star-icon ion-icon{
+  margin-right: 3px;
+  font-size: 15px;
+}
+.selected {
+  color: burlywood;
+}

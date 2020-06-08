@@ -1,0 +1,101 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-icon name="arrow-back" class="icon-close" (click)="dismiss()"></ion-icon>
+      <ion-avatar slot="start" >
+          <img [src]="sender.userPhotoUrl" class="chatImage">
+          <span class="onlineOffline_icon" style="left:14%; right: unset;" [ngStyle]="{'background-color':(sender.online ? '#4cd137' : '#c23616')}"></span>
+      </ion-avatar>
+    <ion-title> 
+      <b style="font-size: 13px;position: absolute;left:20%"  (click)="newChatMessage()">{{sender.userDisplayName}}</b> 
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content  ion-padding-vertical ion-fullscreen >
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" *ngIf="countAllMessage >= limitMessage ">
+    <ion-refresher-content
+      pullingIcon="arrow-dropdown"
+      refreshingSpinner="circles"
+     >
+    </ion-refresher-content>
+  </ion-refresher>
+  
+    <div id="chat-parent" class="bg-image" [ngClass]="{ 'bg-image-X': 'phone_model'=='iPhone X'}">
+      <ion-list id="chat-container">
+        <ion-row *ngFor="let conv of ChatMessages ; let i = index;" class="full no-padding" >
+          <ion-col class="no-padding chat-row" [ngClass]="{ 'reverse': conv.sentBy== User.id}">
+            <div class="avatar-parent" *ngIf='conv.sentBy !=User.id'>
+              <div class="avatar-border"></div>
+              <img *ngIf="conv.sentBy ==User.id" [src]="User.userPhotoUrl" class="avatar">
+              <img *ngIf="conv.sentBy !=User.id" [src]="sender.userPhotoUrl" class="avatar">
+            </div>
+            <div [ngClass]="{ 'name-row-parent-right': conv.sentBy==User.id,'name-row-parent-left': conv.sentBy!=User.id}">
+              <div class="no-padding" [ngClass]="{ 'name-row-right': conv.sentBy==User.id,'name-row-left': conv.sentBy!=User.id}">
+                {{conv.sentBy== User.id ? '': sender.userDisplayName}}
+                <div [ngClass]="{ 'timer-right': conv.sentBy==User.id,'timer-left': conv.sentBy!=User.id}">{{ formatDate(conv.messageTime) }}
+                  <ion-icon *ngIf="conv.sender && conv.sent" name="checkmark" [color]="conv.read ? 'd3green': 'light'"
+                    class="first-tick"></ion-icon>
+                  <ion-icon *ngIf="conv.sender && conv.delivered" name="checkmark" [color]="conv.read ? 'd3green': 'light'"
+                    class="second-tick"></ion-icon>
+                </div>
+                <div [ngClass]="{ 'reverse-arc-': conv.sentBy==User.id,'reverse-arc-left': conv.sentBy != User.id && !conv.sticker}">
+                  <div [ngClass]="{ 'reverse-arc-color-': conv.sentBy==User.id,'reverse-arc-color-left': conv.sentBy!=User.id && !conv.sticker}"></div>
+                </div>
+              </div>
+              <div class="no-padding" [ngClass]="{ 'message-row-right': conv.sentBy==User.id,'message-row-left': conv.sentBy !=User.id,'message-sticker': conv.sticker}">
+                <ion-text ion-no-margin class="text" *ngIf="conv.message !== 'like' && !conv.sticker">{{conv.message}}</ion-text>
+                <ion-icon name="thumbs-up" *ngIf="conv.message == 'like'" style="color:#97fd27 ;font-size: 20px;"></ion-icon>
+                <ion-thumbnail *ngIf="conv.sticker && conv.message !== 'like'" class="sticker">
+                  <ion-img [src]="conv.message"></ion-img>
+                </ion-thumbnail>
+              </div>
+            </div>
+  
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+          
+            <img src="../../assets/chat/typing.gif" *ngIf='isTyping' style="width: 60px;height: 30px;border-radius: 40%;">
+          </ion-col>
+        </ion-row>
+      </ion-list>
+    </div>
+</ion-content>
+  <ion-footer translucent [ngClass]="{ 'custom-footer': 'phone_model'=='iPhone X'}">
+    <ion-row class="input-position" [ngClass]="{ 'custom-footer-row': ''=='iPhone X'}">
+      <ion-col size="9">
+        <form>
+        <ion-textarea  (ionFocus)="checkFocus()"  (ionBlur)="checkBlur()" (ionInput)="checkInput()" [(ngModel)]="data.message" 
+        [ngModelOptions]="{standalone: true}" class="input restrict"class="input restrict" 
+         type="text" placeholder="Type a message" id="typeMessage"  ion-padding-start></ion-textarea  >
+         <span class="input-group-addon success" (click)="sticker()"><ion-icon name="happy"  style="margin-bottom: 3px;"name="happy"></ion-icon></span>
+        
+      </form>
+      </ion-col>
+      <ion-col size="3">
+          <ion-icon name="thumbs-up" class="btn-send" *ngIf="like" (click)="newChatLike()"></ion-icon>
+          <ion-icon name="send" class="btn-send" *ngIf="!like" (click)="newChatMessage()"></ion-icon>
+      </ion-col>
+    </ion-row>
+    <ion-row id="myTabSticker" style="display: none;">
+      <ion-col size="12">
+        
+        <div class="tab-content" >
+          <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <ion-grid>
+            <ion-row>
+              <ion-col *ngFor="let sticker of  dataSticker | async">
+                <div>
+                  <ion-thumbnail slot="start" (click)="chatSticker(sticker.url)">
+                    <ion-img [src]="sticker.url"></ion-img>
+                  </ion-thumbnail>
+                </div>
+              </ion-col>
+             
+            </ion-row>
+          </ion-grid>
+          </div>
+         </div>
+      </ion-col>
+    </ion-row>
+  </ion-footer>
